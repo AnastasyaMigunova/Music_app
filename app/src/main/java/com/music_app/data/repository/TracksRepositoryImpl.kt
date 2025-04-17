@@ -33,7 +33,7 @@ class TracksRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchTracks(query: String): Result<List<Track>> {
+    override suspend fun getTracksByQuery(query: String): Result<List<Track>> {
         return try {
             val response = apiService.searchTracks(query)
             val searchTracks = dataToDomainMapper.run { response.toDomain() }

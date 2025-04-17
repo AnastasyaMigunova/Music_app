@@ -1,4 +1,4 @@
-package com.music_app.di
+package com.music_app.data.di
 
 import com.music_app.data.api.ApiService
 import com.music_app.data.mapper.DataToDomainMapper
