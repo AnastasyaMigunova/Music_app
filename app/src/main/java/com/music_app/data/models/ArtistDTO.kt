@@ -13,7 +13,7 @@ data class ArtistDTO(
     @Json(name = "picture_medium") val pictureMedium: String,
     @Json(name = "picture_big") val pictureBig: String,
     @Json(name = "picture_xl") val pictureXl: String,
-    val radio: Boolean,
+    val radio: Boolean = false,
     @Json(name = "tracklist") val trackList: String,
     val type: String
 )

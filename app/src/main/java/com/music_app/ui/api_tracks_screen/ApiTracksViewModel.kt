@@ -1,7 +1,8 @@
 package com.music_app.ui.api_tracks_screen
 
 import androidx.lifecycle.ViewModel
-import com.music_app.domain.usecase.api_tracks.GetTracksUseCase
+import com.music_app.domain.usecase.api_tracks.GetApiTracksByQueryUseCase
+import com.music_app.domain.usecase.api_tracks.GetApiTracksUseCase
 import com.music_app.ui.models.TrackVO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
@@ -24,7 +25,8 @@ sealed class ApiTracksSideEffect {
 
 @HiltViewModel
 class ApiTracksViewModel @Inject constructor(
-    private val getTracksUseCase: GetTracksUseCase
+    private val getApiTracksUseCase: GetApiTracksUseCase,
+    private val getApiTracksByQueryUseCase: GetApiTracksByQueryUseCase
 ) : ContainerHost<ApiTracksState, ApiTracksSideEffect>, ViewModel() {
 
     override val container = container<ApiTracksState, ApiTracksSideEffect>(ApiTracksState())
@@ -32,7 +34,7 @@ class ApiTracksViewModel @Inject constructor(
     fun loadTracks() = intent {
         reduce { state.copy(isLoading = true) }
 
-        val result = getTracksUseCase.getTracks()
+        val result = getApiTracksUseCase.getTracks()
 
         result
             .onSuccess { tracks ->
@@ -49,6 +51,30 @@ class ApiTracksViewModel @Inject constructor(
                 reduce { state.copy(isLoading = false, errorMessage = errorMessage) }
                 postSideEffect(ApiTracksSideEffect.ShowError(errorMessage))
             }
+    }
+
+    fun searchTracks(query: String) {
+        intent {
+            reduce { state.copy(isLoading = true) }
+
+            val result = getApiTracksByQueryUseCase.getTracksByQuery(query)
+
+            result
+                .onSuccess { tracks ->
+                    reduce {
+                        state.copy(
+                            isLoading = false,
+                            tracks = tracks,
+                            errorMessage = null
+                        )
+                    }
+                }
+                .onFailure { exception ->
+                    val errorMessage = exception.message ?: "Ошибка при поиске"
+                    reduce { state.copy(isLoading = false, errorMessage = errorMessage) }
+                    postSideEffect(ApiTracksSideEffect.ShowError(errorMessage))
+                }
+        }
     }
 
     fun navigate(id: Long) = intent {

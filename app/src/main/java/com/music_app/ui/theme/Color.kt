@@ -13,7 +13,8 @@ val Pink40 = Color(0xFF7D5260)
 
 data class CustomColors(
     val background: Color = Color(0xFF3C096C),
-    val backgroundItem: Color = Color(0xFF7B2CBF)
+    val backgroundItem: Color = Color(0xFFD29CFF),
+    val bottomNavItem: Color = Color(0xFF7B2CBF)
 )
 
 val LocalCustomColors = staticCompositionLocalOf { CustomColors() }

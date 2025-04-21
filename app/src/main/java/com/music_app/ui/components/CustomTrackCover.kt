@@ -18,7 +18,7 @@ fun CustomTrackCover(
         model = cover,
         contentDescription = "Track Cover",
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp)),
+            .clip(RoundedCornerShape(10.dp)),
         error = painterResource(R.drawable.default_track_cover)
     )
 }

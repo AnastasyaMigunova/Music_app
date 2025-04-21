@@ -4,13 +4,13 @@ import android.util.Log
 import com.music_app.data.api.ApiService
 import com.music_app.data.mapper.DataToDomainMapper
 import com.music_app.domain.models.Track
-import com.music_app.domain.repository.TracksRepository
+import com.music_app.domain.repository.ApiTracksRepository
 import javax.inject.Inject
 
-class TracksRepositoryImpl @Inject constructor(
+class ApiTracksRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dataToDomainMapper: DataToDomainMapper
-) : TracksRepository {
+) : ApiTracksRepository {
     override suspend fun getTracks(): Result<List<Track>> {
         return try {
             val response = apiService.getTracks()

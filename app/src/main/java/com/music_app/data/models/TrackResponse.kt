@@ -1,29 +1,23 @@
 package com.music_app.data.models
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class TrackResponse(
     val id: Long,
     val readable: Boolean,
     val title: String,
-    val titleShort: String,
-    val titleVersion: String?,
-    val isrc: String,
+    @Json(name = "title_short") val titleShort: String,
+    @Json(name = "title_version") val titleVersion: String?,
     val link: String,
-    val share: String,
     val duration: Int,
-    val trackPosition: Int,
-    val diskNumber: Int,
     val rank: Int,
-    val releaseDate: String,
-    val explicitLyrics: Boolean,
-    val explicitContentLyrics: Int,
-    val explicitContentCover: Int,
+    @Json(name = "explicit_lyrics") val explicitLyrics: Boolean,
+    @Json(name = "explicit_content_lyrics") val explicitContentLyrics: Int,
+    @Json(name = "explicit_content_cover") val explicitContentCover: Int,
     val preview: String,
-    val bpm: Int,
-    val gain: Double,
-    val availableCountries: List<String>,
-    val contributors: List<ContributorDTO>,
-    val md5Image: String,
-    val trackToken: String,
+    @Json(name = "md5_image") val md5Image: String,
     val artist: ArtistDTO,
     val album: AlbumDTO,
     val type: String

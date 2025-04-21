@@ -8,7 +8,7 @@ data class TrackDTO(
     val id: Long,
     val title: String,
     @Json(name = "title_short") val titleShort: String,
-    @Json(name = "title_version") val titleVersion: String,
+    @Json(name = "title_version") val titleVersion: String?,
     val link: String,
     val duration: Int,
     val rank: Int,
