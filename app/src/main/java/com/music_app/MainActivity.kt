@@ -25,7 +25,10 @@ import com.music_app.ui.api_tracks_screen.ApiTracksScreen
 import com.music_app.ui.components.CustomBottomBar
 import com.music_app.ui.navigation.NavGraph
 import com.music_app.ui.navigation.NavigationItem
+import com.music_app.ui.navigation.Screen
 import com.music_app.ui.navigation.rememberNavigationState
+import com.music_app.ui.play_track_screen.PlayTrackScreen
+import com.music_app.ui.play_track_screen.PlayTrackSource
 import com.music_app.ui.saved_tracks_screen.SavedTracksScreen
 import com.music_app.ui.theme.Music_appTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,15 +81,27 @@ class MainActivity : ComponentActivity() {
                             navHostController = navigationState.navHostController,
                             apiTracksScreenContent = {
                                 ApiTracksScreen(
-                                    navigate = {  }
+                                    navigate = { id: Long, source: PlayTrackSource ->
+                                        navigationState.navigateAndClearTo(
+                                            "${Screen.ApiTracksTab.route}/${Screen.PlayTrackScreen.createRoute(id, source)}"
+                                        )
+                                    }
                                 )
                             },
                             savedTracksScreenContent = {
                                 SavedTracksScreen(
-                                    navigate = {}
+                                    navigate = { id: Long, source: PlayTrackSource ->
+                                        navigationState.navigateAndClearTo(
+                                            "${Screen.SavedTracksTab.route}/${Screen.PlayTrackScreen.createRoute(id, source)}"
+                                        )
+                                    }
                                 )
                             },
-                            playTrackScreenContent = {
+                            playTrackScreenContent = { id, source ->
+                                PlayTrackScreen(
+                                    id = id,
+                                    source = source
+                                )
                             }
                         )
                     }

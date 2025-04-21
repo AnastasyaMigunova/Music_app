@@ -14,21 +14,23 @@ import com.music_app.ui.api_tracks_screen.ApiTracksState
 import com.music_app.ui.components.CustomSearchBar
 import com.music_app.ui.components.TracksListScreenContent
 import com.music_app.ui.models.TrackVO
+import com.music_app.ui.play_track_screen.PlayTrackSource
 import com.music_app.ui.theme.LocalCustomColors
 
 @Composable
 fun ApiTracksScreenContent(
     state: ApiTracksState,
-    onTrackClick: (Long) -> Unit,
+    onTrackClick: (Long, PlayTrackSource) -> Unit,
     searchTracks: (String) -> Unit,
     clearSearch: () -> Unit
 ) {
     val customColors = LocalCustomColors.current
     val trackName = rememberSaveable { mutableStateOf("") }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(customColors.bottomNavItem)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(customColors.bottomNavItem)
     ) {
         CustomSearchBar(
             text = trackName,
@@ -41,6 +43,7 @@ fun ApiTracksScreenContent(
             isLoading = state.isLoading,
             tracks = state.tracks,
             placeholderText = stringResource(id = R.string.no_tracks),
+            playTrackSource = PlayTrackSource.FROM_API,
             onTrackClick = onTrackClick
         )
     }
@@ -66,7 +69,7 @@ fun PreviewApiTracksScreenContent() {
             ),
             errorMessage = null
         ),
-        onTrackClick = {},
+        onTrackClick = { _, _ -> },
         searchTracks = {},
         clearSearch = {}
     )

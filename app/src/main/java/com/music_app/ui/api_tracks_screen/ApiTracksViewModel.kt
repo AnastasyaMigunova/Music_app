@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.music_app.domain.usecase.api_tracks.GetApiTracksByQueryUseCase
 import com.music_app.domain.usecase.api_tracks.GetApiTracksUseCase
 import com.music_app.ui.models.TrackVO
+import com.music_app.ui.play_track_screen.PlayTrackSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -20,7 +21,7 @@ data class ApiTracksState(
 
 sealed class ApiTracksSideEffect {
     data class ShowError(val message: String) : ApiTracksSideEffect()
-    data class NavigateTo(val id: Long) : ApiTracksSideEffect()
+    data class NavigateTo(val id: Long, val playTrackSource: PlayTrackSource) : ApiTracksSideEffect()
 }
 
 @HiltViewModel
@@ -77,7 +78,7 @@ class ApiTracksViewModel @Inject constructor(
         }
     }
 
-    fun navigate(id: Long) = intent {
-        postSideEffect(ApiTracksSideEffect.NavigateTo(id))
+    fun navigate(id: Long, playTrackSource: PlayTrackSource) = intent {
+        postSideEffect(ApiTracksSideEffect.NavigateTo(id, playTrackSource))
     }
 }

@@ -13,13 +13,14 @@ import com.music_app.R
 import com.music_app.ui.components.CustomSearchBar
 import com.music_app.ui.components.TracksListScreenContent
 import com.music_app.ui.models.TrackVO
+import com.music_app.ui.play_track_screen.PlayTrackSource
 import com.music_app.ui.saved_tracks_screen.SavedTracksState
 import com.music_app.ui.theme.LocalCustomColors
 
 @Composable
 fun SavedTracksScreenContent(
     state: SavedTracksState,
-    onTrackClick: (Long) -> Unit,
+    onTrackClick: (Long, PlayTrackSource) -> Unit,
     searchTracks: (String) -> Unit,
     clearSearch: () -> Unit
 ) {
@@ -41,6 +42,7 @@ fun SavedTracksScreenContent(
             isLoading = state.isLoading,
             tracks = state.tracks,
             placeholderText = stringResource(id = R.string.no_tracks),
+            playTrackSource = PlayTrackSource.FROM_SAVED,
             onTrackClick = onTrackClick
         )
     }
@@ -66,7 +68,7 @@ fun PreviewSavedTracksScreenContent() {
             ),
             errorMessage = null
         ),
-        onTrackClick = {},
+        onTrackClick = {_, _ -> },
         searchTracks = {},
         clearSearch = {}
     )

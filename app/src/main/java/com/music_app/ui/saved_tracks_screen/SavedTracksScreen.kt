@@ -12,13 +12,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.music_app.ui.play_track_screen.PlayTrackSource
 import com.music_app.ui.saved_tracks_screen.components.SavedTracksScreenContent
 import kotlinx.coroutines.flow.collectLatest
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun SavedTracksScreen(
-    navigate: (Long) -> Unit,
+    navigate: (Long, PlayTrackSource) -> Unit,
     viewModel: SavedTracksViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
@@ -53,7 +54,7 @@ fun SavedTracksScreen(
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collectLatest { sideEffect ->
             when (sideEffect) {
-                is SavedTracksSideEffect.NavigateTo -> navigate(sideEffect.id)
+                is SavedTracksSideEffect.NavigateTo -> navigate(sideEffect.id, sideEffect.playTrackSource)
                 is SavedTracksSideEffect.ShowError -> {
                     Log.e("SavedTracksScreen", "Error: ${sideEffect.message}")
                     Toast.makeText(context, sideEffect.message, Toast.LENGTH_LONG).show()
@@ -64,7 +65,7 @@ fun SavedTracksScreen(
 
     SavedTracksScreenContent(
         state = state,
-        onTrackClick = { id -> viewModel.navigate(id) },
+        onTrackClick = { id, playTrackSource -> viewModel.navigate(id, playTrackSource) },
         searchTracks = { query -> viewModel.searchTracks(query) },
         clearSearch = { viewModel.loadTracks() }
     )

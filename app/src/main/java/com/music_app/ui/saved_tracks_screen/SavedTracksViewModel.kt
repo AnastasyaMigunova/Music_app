@@ -2,8 +2,8 @@ package com.music_app.ui.saved_tracks_screen
 
 import androidx.lifecycle.ViewModel
 import com.music_app.domain.usecase.saved_tracks.GetSavedTracksUseCase
-import com.music_app.ui.api_tracks_screen.ApiTracksSideEffect
 import com.music_app.ui.models.TrackVO
+import com.music_app.ui.play_track_screen.PlayTrackSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -20,7 +20,7 @@ data class SavedTracksState(
 
 sealed class SavedTracksSideEffect {
     data class ShowError(val message: String) : SavedTracksSideEffect()
-    data class NavigateTo(val id: Long) : SavedTracksSideEffect()
+    data class NavigateTo(val id: Long, val playTrackSource: PlayTrackSource) : SavedTracksSideEffect()
 }
 
 @HiltViewModel
@@ -65,7 +65,7 @@ class SavedTracksViewModel @Inject constructor(
         reduce { state.copy(tracks = filtered) }
     }
 
-    fun navigate(id: Long) = intent {
-        postSideEffect(SavedTracksSideEffect.NavigateTo(id))
+    fun navigate(id: Long, playTrackSource: PlayTrackSource) = intent {
+        postSideEffect(SavedTracksSideEffect.NavigateTo(id, playTrackSource))
     }
 }

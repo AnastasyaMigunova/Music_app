@@ -1,12 +1,15 @@
 package com.music_app.data.di
 
 import android.content.Context
+import android.media.MediaPlayer
 import com.music_app.data.api.ApiService
 import com.music_app.data.mapper.DataToDomainMapper
 import com.music_app.data.repository.ApiTracksRepositoryImpl
+import com.music_app.data.repository.MusicRepositoryImpl
 import com.music_app.data.repository.SavedTracksRepositoryImpl
 import com.music_app.data.tracksHelper.TracksHelper
 import com.music_app.domain.repository.ApiTracksRepository
+import com.music_app.domain.repository.MusicRepository
 import com.music_app.domain.repository.SavedTracksRepository
 import dagger.Module
 import dagger.Provides
@@ -31,6 +34,13 @@ class DataModule {
         tracksHelper: TracksHelper
     ): SavedTracksRepository {
         return SavedTracksRepositoryImpl(context, tracksHelper)
+    }
+
+    @Provides
+    fun provideMusicRepository(
+        mediaPlayer: MediaPlayer
+    ): MusicRepository {
+        return MusicRepositoryImpl(mediaPlayer)
     }
 
     @Provides
