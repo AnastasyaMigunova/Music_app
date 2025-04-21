@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.music_app.ui.play_track_screen.PlayTrackSource
 
 private const val TRANSITION_DURATION = 300
 
@@ -14,7 +15,7 @@ fun NavGraph(
     navHostController: NavHostController,
     apiTracksScreenContent: @Composable () -> Unit,
     savedTracksScreenContent: @Composable () -> Unit,
-    playTrackScreenContent: @Composable (Long) -> Unit
+    playTrackScreenContent: @Composable (Long, PlayTrackSource) -> Unit
 ) {
     NavHost(
         navController = navHostController,

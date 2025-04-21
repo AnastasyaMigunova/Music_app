@@ -22,4 +22,13 @@ class SavedTracksRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun getTrackById(id: Long): Result<Track> {
+        val track = tracksHelper.getAudioFileById(context, id)
+        return if (track != null) {
+            Result.success(track)
+        } else {
+            Result.failure(Exception("Track not found"))
+        }
+    }
 }

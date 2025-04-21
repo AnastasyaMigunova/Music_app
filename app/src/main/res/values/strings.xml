@@ -2,4 +2,6 @@
     <string name="app_name">music_app</string>
     <string name="no_tracks">Нет доступных треков</string>
     <string name="search_tracks">Поиск треков...</string>
+    <string name="notification_channel_name">Music Player</string>
+    <string name="notification_channel_description">Music playback controls</string>
 </resources>
