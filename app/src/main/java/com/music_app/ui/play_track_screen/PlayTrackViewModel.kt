@@ -55,14 +55,5 @@ class PlayTrackViewModel @Inject constructor(
             }
     }
 
-    fun togglePlayPause() = intent {
-        state.track?.let {
-            val isPlaying = !state.isPlaying
-            reduce { state.copy(isPlaying = isPlaying) }
-        }
-    }
 
-    fun updateProgress(position: Long) = intent {
-        reduce { state.copy(currentPosition = position) }
-    }
 }
