@@ -2,18 +2,23 @@ package com.music_app.data.service
 
 import android.content.ComponentName
 import android.content.Context
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import com.google.common.util.concurrent.ListenableFuture
-import com.music_app.domain.service.MusicRepository
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
+import com.music_app.data.mapper.DataToDomainMapper
 import com.music_app.domain.models.Track
+import com.music_app.domain.service.MusicController
 import com.music_app.other.PlayerState
 
-class MusicRepositoryImpl(context: Context) : MusicRepository {
+class MusicControllerImpl(
+    context: Context,
+    private val dataToDomainMapper: DataToDomainMapper
+) : MusicController {
 
     private var mediaControllerFuture: ListenableFuture<MediaController>
     private val mediaController: MediaController?
@@ -47,7 +52,7 @@ class MusicRepositoryImpl(context: Context) : MusicRepository {
                 with(player) {
                     mediaControllerCallback?.invoke(
                         playbackState.toPlayerState(isPlaying),
-                        currentMediaItem?.toSong(),
+                        dataToDomainMapper.run { currentMediaItem?.toDomain() },
                         currentPosition.coerceAtLeast(0L),
                         duration.coerceAtLeast(0L),
                         shuffleModeEnabled,
@@ -65,17 +70,17 @@ class MusicRepositoryImpl(context: Context) : MusicRepository {
             else -> if (isPlaying) PlayerState.PLAYING else PlayerState.PAUSED
         }
 
-    override fun addMediaItems(songs: List<Track>) {
+    override fun addTracks(songs: List<Track>) {
         val mediaItems = songs.map {
             MediaItem.Builder()
-                .setMediaId(it.songUrl)
-                .setUri(it.songUrl)
+                .setMediaId(it.id.toString())
+                .setUri(it.previewUrl)
                 .setMediaMetadata(
                     MediaMetadata.Builder()
                         .setTitle(it.title)
-                        .setSubtitle(it.subtitle)
-                        .setArtist(it.subtitle)
-                        .setArtworkUri(Uri.parse(it.imageUrl))
+                        .setSubtitle(it.artistName)
+                        .setArtist(it.artistName)
+                        .setArtworkUri(it.albumCover.toUri())
                         .build()
                 )
                 .build()
@@ -102,7 +107,8 @@ class MusicRepositoryImpl(context: Context) : MusicRepository {
 
     override fun getCurrentPosition(): Long = mediaController?.currentPosition ?: 0L
 
-    override fun getCurrentSong(): Track? = mediaController?.currentMediaItem?.toSong()
+    override fun getCurrentSong(): Track? =
+        dataToDomainMapper.run { mediaController?.currentMediaItem?.toDomain() }
 
     override fun seekTo(position: Long) {
         mediaController?.seekTo(position)

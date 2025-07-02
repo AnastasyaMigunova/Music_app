@@ -1,4 +1,4 @@
-package com.music_app.domain.mapper
+package com.music_app.ui.mapper
 
 import com.music_app.domain.models.Track
 import com.music_app.ui.models.TrackVO

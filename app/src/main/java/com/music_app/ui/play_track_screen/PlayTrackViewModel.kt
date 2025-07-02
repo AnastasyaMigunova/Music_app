@@ -3,6 +3,11 @@ package com.music_app.ui.play_track_screen
 
 import androidx.lifecycle.ViewModel
 import com.music_app.domain.usecase.api_tracks.GetApiTrackByIdUseCase
+import com.music_app.domain.usecase.play_track.PauseTrackUseCase
+import com.music_app.domain.usecase.play_track.ResumeTrackUseCase
+import com.music_app.domain.usecase.play_track.SeekTrackToPositionUseCase
+import com.music_app.domain.usecase.play_track.SkipToNextTrackUseCase
+import com.music_app.domain.usecase.play_track.SkipToPreviousTrackUseCase
 import com.music_app.domain.usecase.saved_tracks.GetSavedTrackByIdUseCase
 import com.music_app.ui.models.TrackVO
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +34,12 @@ sealed class PlayTrackSideEffect {
 @HiltViewModel
 class PlayTrackViewModel @Inject constructor(
     private val getApiTrackByIdUseCase: GetApiTrackByIdUseCase,
-    private val getSavedTrackByIdUseCase: GetSavedTrackByIdUseCase
+    private val getSavedTrackByIdUseCase: GetSavedTrackByIdUseCase,
+    private val pauseSongUseCase: PauseTrackUseCase,
+    private val resumeSongUseCase: ResumeTrackUseCase,
+    private val skipToNextSongUseCase: SkipToNextTrackUseCase,
+    private val skipToPreviousSongUseCase: SkipToPreviousTrackUseCase,
+    private val seekSongToPositionUseCase: SeekTrackToPositionUseCase,
 ) : ContainerHost<PlayTrackState, PlayTrackSideEffect>, ViewModel() {
 
     override val container = container<PlayTrackState, PlayTrackSideEffect>(
@@ -55,5 +65,24 @@ class PlayTrackViewModel @Inject constructor(
             }
     }
 
+    private fun pauseMusic() {
+        pauseSongUseCase()
+    }
+
+    private fun resumeMusic() {
+        resumeSongUseCase()
+    }
+
+    private fun skipToNextSong() = skipToNextSongUseCase {
+
+    }
+
+    private fun skipToPreviousSong() = skipToPreviousSongUseCase {
+
+    }
+
+    private fun seekToPosition(position: Long) {
+        seekSongToPositionUseCase(position)
+    }
 
 }

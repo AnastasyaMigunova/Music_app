@@ -3,7 +3,7 @@ package com.music_app.domain.service
 import com.music_app.domain.models.Track
 import com.music_app.other.PlayerState
 
-interface MusicRepository {
+interface MusicController {
     var mediaControllerCallback: (
         (
         playerState: PlayerState,
@@ -15,7 +15,7 @@ interface MusicRepository {
     ) -> Unit
     )?
 
-    fun addMediaItems(songs: List<Track>)
+    fun addTracks(songs: List<Track>)
 
     fun play(mediaItemIndex: Int)
 

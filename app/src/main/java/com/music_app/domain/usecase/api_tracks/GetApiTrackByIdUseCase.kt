@@ -1,6 +1,6 @@
 package com.music_app.domain.usecase.api_tracks
 
-import com.music_app.domain.mapper.DomainToUiMapper
+import com.music_app.ui.mapper.DomainToUiMapper
 import com.music_app.domain.repository.ApiTracksRepository
 import com.music_app.ui.models.TrackVO
 import javax.inject.Inject
